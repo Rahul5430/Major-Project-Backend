@@ -28,6 +28,7 @@ const passport = require('passport');
 require('./middleware/passport');
 
 const authRoutes = require('./routes/authRoutes');
+const usersRoutes = require('./routes/userRoutes');
 
 // Set up body parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -53,6 +54,7 @@ app.use(passport.session());
 // Use routes
 // app.use("/", mainRoutes);
 app.use('/auth', authRoutes);
+app.use('/users', usersRoutes);
 
 // Set up error handling middleware
 app.use(errorLoggerMiddleware);

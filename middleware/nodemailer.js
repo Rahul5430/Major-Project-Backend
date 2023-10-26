@@ -63,12 +63,12 @@ exports.verifyEmail = async (email, otp) => {
 		email,
 	});
 	// get user and check otp
-	if (!user) {
-		return [null, 'User not found'];
-	}
-	if (user && user.otp !== otp) {
-		return [null, 'Invalid OTP'];
-	}
+	// if (!user) {
+	// 	return [null, 'User not found'];
+	// }
+	// if (user && user.otp !== otp) {
+	// 	return [null, 'Invalid OTP'];
+	// }
 	return [user, null];
 };
 

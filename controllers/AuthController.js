@@ -81,6 +81,7 @@ exports.register = async (req, res) => {
 			otp: otpGenerated,
 			referalCode: referal,
 			verified: false,
+			isPhoneVerified: true,
 		});
 
 		if (!newUser) {
