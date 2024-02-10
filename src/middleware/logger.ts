@@ -1,5 +1,5 @@
-/* eslint-disable no-shadow */
-const winston = require('winston');
+import { NextFunction, Request, Response } from 'express';
+import winston from 'winston';
 
 const { combine, timestamp, align, printf, colorize } = winston.format;
 
@@ -24,20 +24,15 @@ const logger = winston.createLogger({
 	],
 });
 
-const logMiddleware = (req, res, next) => {
+const logMiddleware = (req: Request, res: Response, next: NextFunction) => {
 	const { method, url, id } = req;
 	logger.info(`Request received: ${method} - ${url} by ${id || 'authCall'}`);
 	next();
 };
 
-// eslint-disable-next-line no-unused-vars
-const errorLoggerMiddleware = (err, req, res, next) => {
+const errorLoggerMiddleware = (err: Error, req: Request, res: Response) => {
 	logger.error(`Error occurred: ${err.message}`);
 	res.status(500).send('Server Error');
 };
 
-module.exports = {
-	logMiddleware,
-	errorLoggerMiddleware,
-	logger, // If you want to use the logger elsewhere in your app
-};
+export { errorLoggerMiddleware, logger, logMiddleware };

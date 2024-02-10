@@ -1,9 +1,17 @@
-const passport = require('passport');
-const GoogleTokenStrategy = require('passport-google-oauth2').Strategy;
-const Hashids = require('hashids/cjs');
-const crypto = require('crypto');
-const { logger } = require('./logger');
-const User = require('../models/User');
+import crypto from 'crypto';
+import Hashids from 'hashids';
+import passport from 'passport';
+import passportGoogle from 'passport-google-oauth2';
+
+import User from '../models/User';
+import {
+	BACKEND,
+	GOOGLE_CLIENT_ID,
+	GOOGLE_CLIENT_SECRET,
+} from '../utils/secrets';
+import { logger } from './logger';
+
+const GoogleTokenStrategy = passportGoogle.Strategy;
 
 function generateSecurePassword(length = 12) {
 	const charset =
@@ -21,9 +29,9 @@ function generateSecurePassword(length = 12) {
 passport.use(
 	new GoogleTokenStrategy(
 		{
-			clientID: process.env.CLIENT_ID,
-			clientSecret: process.env.CLIENT_SECRET,
-			callbackURL: `${process.env.BACKEND}/auth/google/callback`,
+			clientID: GOOGLE_CLIENT_ID,
+			clientSecret: GOOGLE_CLIENT_SECRET,
+			callbackURL: `${BACKEND}/auth/google/callback`,
 			passReqToCallback: true,
 		},
 		async (req, accessToken, refreshToken, params, profile, done) => {
@@ -58,7 +66,7 @@ passport.use(
 								: `${username.substring(
 										0,
 										remainingIndices
-								  )}${i}`;
+									)}${i}`;
 						// eslint-disable-next-line no-await-in-loop
 						const existingUser = await User.findOne({
 							username: candidateUsername,
@@ -103,8 +111,7 @@ passport.serializeUser((user, done) => {
 	done(null, user.id);
 });
 
-passport.deserializeUser((id, done) => {
-	User.findById(id, (err, user) => {
-		done(err, user);
-	});
+passport.deserializeUser(async (id, done) => {
+	const user = await User.findById(id);
+	done(null, user);
 });

@@ -2,27 +2,35 @@
 	"env": {
 		"browser": true,
 		"commonjs": true,
-		"es2021": true
+		"es2022": true
 	},
 	"extends": [
 		"eslint:recommended",
-		"airbnb",
-		"airbnb/hooks",
-		"plugin:react/recommended",
-		"plugin:prettier/recommended"
+		"plugin:@typescript-eslint/recommended",
+		"plugin:prettier/recommended",
+		"prettier",
+		"plugin:import/errors",
+		"plugin:import/warnings",
+		"plugin:import/typescript"
 	],
+	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"ecmaVersion": "latest"
 	},
-	"plugins": ["prettier"],
+	"plugins": ["@typescript-eslint", "prettier", "simple-import-sort"],
 	"rules": {
 		"no-underscore-dangle": "off",
 		"quotes": ["error", "single"],
 		"semi": ["error", "always"],
-		"jsx-a11y/anchor-is-valid": "off",
-		"jsx-a11y/label-has-associated-control": "off",
-		"prettier/prettier": ["error",{
-			"endOfLine": "auto"}
-		  ]
+		"prettier/prettier": [
+			"error",
+			{
+				"endOfLine": "auto"
+			}
+		],
+		"simple-import-sort/imports": "error",
+		"simple-import-sort/exports": "error",
+		"import/extensions": "off",
+		"import/no-cycle": [0, { "ignoreExternal": true }]
 	}
 }
