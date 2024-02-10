@@ -8,7 +8,7 @@ import inputValidation from '../validator/validateRequest';
 
 const router: Router = express.Router();
 
-router.get(
+router.post(
 	'/checkUsername',
 	userValidator.validate('checkEmail'),
 	inputValidation,
@@ -17,7 +17,7 @@ router.get(
 	Authcontroller.checkUsername
 );
 
-router.get(
+router.post(
 	'/register',
 	userValidator.validate('registerUser'),
 	inputValidation,
@@ -26,7 +26,7 @@ router.get(
 	Authcontroller.register
 );
 
-router.get(
+router.post(
 	'/login',
 	userValidator.validate('login'),
 	inputValidation,

@@ -10,6 +10,8 @@ import serverless from 'serverless-http';
 import { Server } from 'socket.io';
 
 import { errorLoggerMiddleware, logger } from './middleware/logger';
+import authRoutes from './routes/authRoutes';
+import userRoutes from './routes/userRoutes';
 import { MONGO_URI, PORT } from './utils/secrets';
 
 const app: Express = express();
@@ -45,6 +47,9 @@ mongoose
 app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use('/auth', authRoutes);
+app.use('/users', userRoutes);
 
 app.use(errorLoggerMiddleware);
 
