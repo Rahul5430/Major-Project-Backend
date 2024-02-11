@@ -9,6 +9,7 @@ import passport from 'passport';
 import serverless from 'serverless-http';
 import { Server } from 'socket.io';
 
+import SensorController from './controllers/SensorController';
 import { errorLoggerMiddleware, logger } from './middleware/logger';
 import authRoutes from './routes/authRoutes';
 import userRoutes from './routes/userRoutes';
@@ -66,8 +67,6 @@ const io = new Server(server, {
 	},
 });
 
-io.on('connection', () => {
-	console.log('a user connected');
-});
+SensorController.sensorDataHandler(io);
 
 module.exports.handler = serverless(app);

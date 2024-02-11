@@ -11,12 +11,13 @@ const sensorDataSchema = new Schema<SensorDataDocument>(
 		sensorId: {
 			type: Number,
 			required: true,
-		},
-		location: {
-			latitude: Number,
-			longitude: Number,
+			default: 1,
 		},
 		voltage: {
+			type: Number,
+			required: true,
+		},
+		time: {
 			type: Number,
 			required: true,
 		},

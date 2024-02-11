@@ -8,13 +8,8 @@ export type UserDocument = Document & {
 	password: string;
 };
 
-type Location = {
-	latitude: number;
-	longitude: number;
-};
-
 export type SensorDataDocument = Document & {
 	sensorId: number;
-	location?: Location;
 	voltage: number;
+	time: number;
 };
