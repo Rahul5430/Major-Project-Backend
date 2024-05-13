@@ -72,7 +72,8 @@ const register = async (req: Request, res: Response) => {
 			return res.status(401).json({ message: 'Unable to sign you up' });
 		}
 
-		return res.status(200).json({ message: 'Registered successfully' });
+		const token = signToken(newUser.email);
+		return res.status(200).json({ token, username: newUser.username });
 	} catch (error) {
 		logger.error((error as Error).message);
 		return res.status(401).json({
@@ -84,6 +85,7 @@ const register = async (req: Request, res: Response) => {
 
 const login = async (req: Request, res: Response) => {
 	try {
+		// return res.status(200).json({ token: '', username: 'rahul' });
 		let auth = await User.findOne({ username: req.body.email });
 
 		if (auth === null) {
@@ -117,6 +119,6 @@ const login = async (req: Request, res: Response) => {
 	}
 };
 
-const Authcontroller = { checkUsername, login, register };
+const AuthController = { checkUsername, login, register };
 
-export default Authcontroller;
+export default AuthController;

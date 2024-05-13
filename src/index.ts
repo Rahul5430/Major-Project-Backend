@@ -1,3 +1,5 @@
+import './middleware/passport';
+
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';

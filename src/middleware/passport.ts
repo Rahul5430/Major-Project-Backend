@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import Hashids from 'hashids';
 import passport from 'passport';
-import passportGoogle from 'passport-google-oauth2';
+import { Strategy as GoogleTokenStrategy } from 'passport-google-oauth2';
 
 import User from '../models/User';
 import {
@@ -10,8 +10,6 @@ import {
 	GOOGLE_CLIENT_SECRET,
 } from '../utils/secrets';
 import { logger } from './logger';
-
-const GoogleTokenStrategy = passportGoogle.Strategy;
 
 function generateSecurePassword(length = 12) {
 	const charset =

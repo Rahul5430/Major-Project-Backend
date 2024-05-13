@@ -1,6 +1,8 @@
 import express, { Router } from 'express';
+import passport from 'passport';
 
-import Authcontroller from '../controllers/AuthController';
+import AuthController from '../controllers/AuthController';
+import { signToken } from '../middleware/jwt';
 import { logMiddleware } from '../middleware/logger';
 import rateLimiter from '../middleware/rateLimiter';
 import userValidator from '../validator/user';
@@ -14,7 +16,7 @@ router.post(
 	inputValidation,
 	rateLimiter,
 	logMiddleware,
-	Authcontroller.checkUsername
+	AuthController.checkUsername
 );
 
 router.post(
@@ -23,7 +25,7 @@ router.post(
 	inputValidation,
 	rateLimiter,
 	logMiddleware,
-	Authcontroller.register
+	AuthController.register
 );
 
 router.post(
@@ -32,7 +34,38 @@ router.post(
 	inputValidation,
 	rateLimiter,
 	logMiddleware,
-	Authcontroller.login
+	AuthController.login
+);
+
+// google oauth routes
+router.get(
+	'/google',
+	(req, res, next) => {
+		// req.session.callbackUrl = req.query.callbackUrl;
+		return next();
+	},
+	passport.authenticate('google', { scope: ['email', 'profile'] })
+);
+
+router.get(
+	'/google/callback',
+	passport.authenticate('google', {
+		failureRedirect: `${process.env.FRONTEND}/oauthFail`,
+	}),
+	(req, res) => {
+		if (!req.user) {
+			console.log('no user found!!');
+			return res.redirect(`${process.env.FRONTEND}/oauthFail`);
+		}
+
+		const token = signToken(req.user.email);
+
+		return res
+			.status(301)
+			.redirect(
+				`${process.env.FRONTEND}/oauth?token=${token}&username=${req.user.username}`
+			);
+	}
 );
 
 export default router;
